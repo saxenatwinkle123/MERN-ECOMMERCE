@@ -1,8 +1,21 @@
 import React from "react"
 import { NavLink, Link } from "react-router-dom"
 import { FaShoppingCart } from "react-icons/fa";
+import toast from "react-hot-toast"
+
 
 const Header=()=>{
+  const [auth, setAuth] = useState()
+  const handleLogout = ()=>{
+    setAuth({
+      ...auth, user : null,
+
+
+    })
+
+    localStorage.removeItem('token')
+    toast.success('Logout Successfully')
+  }
     return(
         <>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -25,7 +38,11 @@ const Header=()=>{
          <li className="nav-item">
           <NavLink to="/category" className="nav-link" >Category</NavLink>
         </li>
-        <li className="nav-item">
+      
+{
+  !auth.user ? ( <>
+  
+    <li className="nav-item">
           <NavLink to="/register" className="nav-link" >Register</NavLink>
         </li>
         <li className="nav-item dropdown">
@@ -34,7 +51,15 @@ const Header=()=>{
           </NavLink>
          
         </li>
-
+  
+  </>) : (
+    <>
+      <li className="nav-item">
+          <NavLink onClick={handleLogout} to="/logout" className="nav-link" >Logout</NavLink>
+        </li>
+    </>
+  )
+}
           <li className="nav-item dropdown">
           <NavLink to="/cart" className="nav-link"  >
             Cart(0)
